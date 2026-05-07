@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "sqlproj: Build San-Sebastian",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"/home/benjaubu/workspace/Sistema-precios-almacen/San-Sebastian/San-Sebastian.sqlproj"
+			],
+			"problemMatcher": "$sqlproj-problem-matcher",
+			"isBackground": true,
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "Builds the San-Sebastian SQL project"
+		}
+	]
+}
