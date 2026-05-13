@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel form-panel">
+    <div class="panel-header">
+        <div>
+            <p class="section-label">{{ accion }} producto</p>
+            <h2>{{ config.label }}</h2>
+        </div>
+        <a class="button secondary" href="{{ url_for('productos.listar_productos_view', tipo=tipo_producto) }}">Volver</a>
+    </div>
+
+    <div class="tabs">
+        {% for tipo, tipo_config in tipos_producto.items() %}
+            <a class="tab {% if tipo == tipo_producto %}tab-active{% endif %}" href="{{ url_for('productos.crear_producto_view', tipo=tipo) }}">
+                {{ tipo_config.label }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <form class="form-grid" method="post">
+        <label>
+            {{ config.code_label }}
+            <input
+                name="{{ config.code_field }}"
+                type="text"
+                value="{{ form_data[config.code_field] }}"
+                required
+            >
+        </label>
+
+        <label>
+            Nombre
+            <input
+                name="nombre"
+                type="text"
+                value="{{ form_data['nombre'] }}"
+                required
+            >
+        </label>
+
+        <label>
+            {{ config.price_label }}
+            <input
+                name="{{ config.price_field }}"
+                type="number"
+                step="0.01"
+                min="0"
+                value="{{ form_data[config.price_field] }}"
+                required
+            >
+        </label>
+
+        {% if config.has_quantity %}
+            <label>
+                Cantidad
+                <input
+                    name="cantidad"
+                    type="number"
+                    step="1"
+                    min="0"
+                    value="{{ form_data['cantidad'] }}"
+                    required
+                >
+            </label>
+        {% endif %}
+
+        <div class="form-actions">
+            <button class="button primary" type="submit">{{ accion }}</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

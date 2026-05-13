@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <p class="section-label">CRUD de productos</p>
+            <h2>{{ config.label }}</h2>
+        </div>
+        <a class="button primary" href="{{ url_for('productos.crear_producto_view', tipo=tipo_producto) }}">Nuevo producto</a>
+    </div>
+
+    <div class="tabs">
+        {% for tipo, tipo_config in tipos_producto.items() %}
+            <a class="tab {% if tipo == tipo_producto %}tab-active{% endif %}" href="{{ url_for('productos.listar_productos_view', tipo=tipo) }}">
+                {{ tipo_config.label }}
+            </a>
+        {% endfor %}
+    </div>
+
+    {% if error_carga %}
+        <div class="empty-state">
+            <p>{{ error_carga }}</p>
+        </div>
+    {% elif productos %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ config.code_label }}</th>
+                        <th>Nombre</th>
+                        <th>{{ config.price_label }}</th>
+                        {% if config.has_quantity %}
+                            <th>Cantidad</th>
+                        {% endif %}
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto[config.code_field] }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>${{ producto[config.price_field] }}</td>
+                            {% if config.has_quantity %}
+                                <td>{{ producto.cantidad }}</td>
+                            {% endif %}
+                            <td class="actions">
+                                <a class="button secondary" href="{{ url_for('productos.editar_producto_view', tipo_producto=tipo_producto, producto_id=producto.id) }}">Editar</a>
+                                <form method="post" action="{{ url_for('productos.eliminar_producto_view', tipo_producto=tipo_producto, producto_id=producto.id) }}">
+                                    <button class="button danger" type="submit">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>No hay productos cargados para este tipo.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

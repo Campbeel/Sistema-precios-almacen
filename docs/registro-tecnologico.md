@@ -96,6 +96,13 @@ Registrar aqui decisiones importantes y el motivo.
 - Motivo: Permitir una base visible, simple y rapida de modificar para el sistema interno
 - Impacto: Se agrega una estructura inicial de backend web y vistas para crear, listar, editar y eliminar productos
 
+### Decision 008
+- Fecha: 2026-05-12
+- Tema: Control de archivos en Git
+- Decision: Agregar un `.gitignore` para excluir archivos locales y autogenerados
+- Motivo: Evitar subir a GitHub entornos virtuales, variables locales, caches y archivos temporales
+- Impacto: El repositorio queda mas limpio y seguro para trabajo compartido
+
 ## Bitacora de cambios
 Registrar cada cambio tecnico con fecha y alcance.
 
@@ -106,6 +113,7 @@ Registrar cada cambio tecnico con fecha y alcance.
 | 2026-05-12 | Alcance funcional | Se define que el sistema es de uso interno y no ecommerce | Arquitectura | Esto reduce necesidades de despliegue y complejidad |
 | 2026-05-12 | Inventario | Se crea esqueleto funcional del inventario y script MySQL inicial para tres tablas | MySQL, Markdown | Se deja separado del archivo sqlproj existente |
 | 2026-05-12 | Backend productos | Se crea base CRUD web para productos sobre Flask y MySQL | Python, Flask, MySQL, HTML, CSS | Incluye listar, crear, editar y eliminar por tipo de producto |
+| 2026-05-12 | Control de versiones | Se agrega `.gitignore` para excluir archivos locales del entorno de trabajo | Git | Se ignoran `.venv`, `.env`, caches y logs |
 
 ## Pendientes tecnicos
 - Definir base de datos local o en servidor

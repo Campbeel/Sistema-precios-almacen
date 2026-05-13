@@ -1,0 +1,29 @@
+# Entorno virtual
+.venv/
+venv/
+
+# Variables locales
+.env
+.env.*
+!.env.example
+
+# Cache y compilados de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Herramientas de Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Archivos de sistema y editores
+.DS_Store
+Thumbs.db
+
+# Logs locales
+*.log
