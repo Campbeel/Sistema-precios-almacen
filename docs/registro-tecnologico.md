@@ -103,6 +103,20 @@ Registrar aqui decisiones importantes y el motivo.
 - Motivo: Evitar subir a GitHub entornos virtuales, variables locales, caches y archivos temporales
 - Impacto: El repositorio queda mas limpio y seguro para trabajo compartido
 
+### Decision 009
+- Fecha: 2026-05-12
+- Tema: Acceso de la aplicacion a MySQL
+- Decision: Crear un usuario dedicado `almacen_app` para la aplicacion
+- Motivo: Evitar usar `root` desde Flask y separar acceso administrativo de acceso de la app
+- Impacto: La conexion del backend debe configurarse con este usuario en el archivo de entorno
+
+### Decision 010
+- Fecha: 2026-05-12
+- Tema: Carga de configuracion local
+- Decision: Leer variables desde un archivo `.env` local al iniciar la aplicacion
+- Motivo: Simplificar la configuracion del backend en entorno local sin depender de exportar variables manualmente
+- Impacto: La app puede arrancar con `python app.py` usando la configuracion local del proyecto
+
 ## Bitacora de cambios
 Registrar cada cambio tecnico con fecha y alcance.
 
@@ -114,6 +128,8 @@ Registrar cada cambio tecnico con fecha y alcance.
 | 2026-05-12 | Inventario | Se crea esqueleto funcional del inventario y script MySQL inicial para tres tablas | MySQL, Markdown | Se deja separado del archivo sqlproj existente |
 | 2026-05-12 | Backend productos | Se crea base CRUD web para productos sobre Flask y MySQL | Python, Flask, MySQL, HTML, CSS | Incluye listar, crear, editar y eliminar por tipo de producto |
 | 2026-05-12 | Control de versiones | Se agrega `.gitignore` para excluir archivos locales del entorno de trabajo | Git | Se ignoran `.venv`, `.env`, caches y logs |
+| 2026-05-12 | Base de datos | Se agrega script para crear usuario de aplicacion en MySQL | MySQL | Permite conectar Flask sin usar root |
+| 2026-05-12 | Configuracion local | Se agrega carga de `.env` y archivo local base para conexion del backend | Python, configuracion | La clave real debe reemplazarse manualmente |
 
 ## Pendientes tecnicos
 - Definir base de datos local o en servidor
