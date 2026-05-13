@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <p class="section-label">Consulta general</p>
+            <h2>Inventario total</h2>
+        </div>
+        <a class="button secondary" href="{{ url_for('home.landing_view') }}">Volver al inicio</a>
+    </div>
+
+    {% if error_carga %}
+        <div class="empty-state">
+            <p>{{ error_carga }}</p>
+        </div>
+    {% else %}
+        <div class="stack-sections">
+            {% for bloque in resumen %}
+                <article class="subpanel">
+                    <div class="subpanel-header">
+                        <div>
+                            <p class="section-label">Tipo de producto</p>
+                            <h3>{{ bloque.titulo }}</h3>
+                        </div>
+                        <span class="pill">{{ bloque.productos|length }} registros</span>
+                    </div>
+
+                    {% if bloque.productos %}
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>{{ bloque.code_label }}</th>
+                                        <th>Nombre</th>
+                                        <th>{{ bloque.price_label }}</th>
+                                        <th>Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for producto in bloque.productos %}
+                                        <tr>
+                                            <td>{{ producto.codigo }}</td>
+                                            <td>{{ producto.nombre }}</td>
+                                            <td>${{ producto.precio }}</td>
+                                            <td>
+                                                {% if bloque.has_quantity %}
+                                                    {{ producto.cantidad }}
+                                                {% else %}
+                                                    No controlado
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="empty-state compact">
+                            <p>No hay productos cargados en esta categoria.</p>
+                        </div>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

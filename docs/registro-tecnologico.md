@@ -117,6 +117,27 @@ Registrar aqui decisiones importantes y el motivo.
 - Motivo: Simplificar la configuracion del backend en entorno local sin depender de exportar variables manualmente
 - Impacto: La app puede arrancar con `python app.py` usando la configuracion local del proyecto
 
+### Decision 011
+- Fecha: 2026-05-13
+- Tema: Navegacion principal del sistema
+- Decision: Agregar una landing como pagina inicial y separar inventario, resumen y venta en vistas distintas
+- Motivo: Ordenar mejor el flujo de uso del sistema interno
+- Impacto: La raiz de la aplicacion deja de redirigir directo al CRUD y pasa a mostrar accesos principales
+
+### Decision 012
+- Fecha: 2026-05-13
+- Tema: Venta interna
+- Decision: Implementar una venta simple con carrito por sesion, ingreso por codigo y descuento de stock en productos con cantidad controlada
+- Motivo: Permitir una operacion de venta rapida sin sistema de pago integrado
+- Impacto: Los productos a granel se pueden vender y sumar al total, pero no descuentan stock hasta que exista cantidad en kilos
+
+### Decision 013
+- Fecha: 2026-05-13
+- Tema: Captura de cantidad en venta
+- Decision: Separar la venta en dos pasos: primero verificar codigo y luego pedir unidades o gramos segun el tipo de producto
+- Motivo: Evitar errores de ingreso y adaptar la captura a productos unitarios y granel
+- Impacto: La interfaz de venta detecta el producto antes de pedir la cantidad
+
 ## Bitacora de cambios
 Registrar cada cambio tecnico con fecha y alcance.
 
@@ -130,12 +151,15 @@ Registrar cada cambio tecnico con fecha y alcance.
 | 2026-05-12 | Control de versiones | Se agrega `.gitignore` para excluir archivos locales del entorno de trabajo | Git | Se ignoran `.venv`, `.env`, caches y logs |
 | 2026-05-12 | Base de datos | Se agrega script para crear usuario de aplicacion en MySQL | MySQL | Permite conectar Flask sin usar root |
 | 2026-05-12 | Configuracion local | Se agrega carga de `.env` y archivo local base para conexion del backend | Python, configuracion | La clave real debe reemplazarse manualmente |
+| 2026-05-13 | Navegacion y venta | Se agregan landing, resumen de inventario y venta interna con carrito por sesion | Python, Flask, HTML, CSS, MySQL | Venta descuenta stock solo en productos con cantidad |
+| 2026-05-13 | Venta | Se ajusta captura de cantidad para pedir unidades o gramos segun el producto detectado | Python, Flask, HTML | Flujo de venta en dos pasos |
 
 ## Pendientes tecnicos
 - Definir base de datos local o en servidor
 - Definir metodo de integracion del lector de codigos de barra
 - Definir estrategia de despliegue: local o AWS
 - Confirmar si productos a granel manejaran tambien stock en kilos
+- Definir si se guardara historial de ventas en base de datos
 
 ## Tecnologias posiblemente necesarias
 

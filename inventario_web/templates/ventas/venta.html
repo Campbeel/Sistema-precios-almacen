@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="sales-layout">
+    <article class="panel sales-entry">
+        <div class="panel-header">
+            <div>
+                <p class="section-label">Modulo de venta</p>
+                <h2>Cargar productos</h2>
+            </div>
+            <a class="button secondary" href="{{ url_for('home.landing_view') }}">Volver al inicio</a>
+        </div>
+
+        <form class="sale-form" method="post" action="{{ url_for('ventas.preparar_producto_venta_view') }}">
+            <label>
+                Codigo del producto
+                <input name="codigo" type="text" placeholder="Codigo de barra o codigo interno" autofocus required>
+            </label>
+
+            <div class="form-actions">
+                <button class="button primary" type="submit">Verificar codigo</button>
+            </div>
+        </form>
+
+        {% if producto_preparado %}
+            <div class="pending-product">
+                <div class="pending-product-copy">
+                    <p class="section-label">Producto detectado</p>
+                    <h3>{{ producto_preparado.nombre }}</h3>
+                    <p>Codigo: {{ producto_preparado.codigo }}</p>
+                    <p>{{ producto_preparado.price_label }}: ${{ producto_preparado.precio }}</p>
+                    {% if producto_preparado.has_stock_control %}
+                        <p>Stock disponible: {{ producto_preparado.cantidad_disponible }} unidades</p>
+                    {% else %}
+                        <p>Venta a granel: ingresar peso en gramos.</p>
+                    {% endif %}
+                </div>
+
+                <form class="sale-form" method="post" action="{{ url_for('ventas.agregar_producto_venta_view') }}">
+                    <input type="hidden" name="codigo" value="{{ producto_preparado.codigo }}">
+
+                    <label>
+                        {{ producto_preparado.sale_input_label }}
+                        <input
+                            name="cantidad"
+                            type="number"
+                            step="{{ producto_preparado.sale_input_step }}"
+                            min="{{ producto_preparado.sale_input_min }}"
+                            placeholder="{{ producto_preparado.sale_input_placeholder }}"
+                            value="1"
+                            required
+                        >
+                    </label>
+
+                    <div class="form-actions">
+                        <button class="button primary" type="submit">Agregar a venta</button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+
+        <div class="help-box">
+            <p><strong>Regla:</strong> primero se verifica el codigo y luego el sistema pide unidades o gramos segun el producto.</p>
+            <p><strong>Granel:</strong> ingresar el peso en gramos. Ejemplo: `500` para medio kilo.</p>
+            <p><strong>Nota:</strong> el cobro ocurre fuera del sistema. Aqui solo se calcula y registra la venta.</p>
+        </div>
+    </article>
+
+    <article class="panel sales-cart">
+        <div class="panel-header">
+            <div>
+                <p class="section-label">Detalle actual</p>
+                <h2>Venta en curso</h2>
+            </div>
+            <span class="total-chip">Total: ${{ "%.2f"|format(total) }}</span>
+        </div>
+
+        {% if carrito %}
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in carrito %}
+                            <tr>
+                                <td>{{ item.code }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.quantity }} {{ item.quantity_label }}</td>
+                                <td>${{ item.unit_price }} <span class="price-note">({{ item.unit_price_label }})</span></td>
+                                <td>${{ item.subtotal }}</td>
+                                <td class="actions">
+                                    <form method="post" action="{{ url_for('ventas.eliminar_item_venta_view', item_index=loop.index0) }}">
+                                        <button class="button danger" type="submit">Quitar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="sale-actions">
+                <form method="post" action="{{ url_for('ventas.vaciar_venta_view') }}">
+                    <button class="button secondary" type="submit">Vaciar venta</button>
+                </form>
+                <form method="post" action="{{ url_for('ventas.finalizar_venta_view') }}">
+                    <button class="button primary" type="submit">Finalizar venta</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>No hay productos agregados todavia.</p>
+            </div>
+        {% endif %}
+    </article>
+</section>
+{% endblock %}

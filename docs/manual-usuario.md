@@ -16,6 +16,14 @@ Explicar el uso de la aplicacion del almacen de forma simple y ordenada.
 
 ## Modulos principales
 
+### 0. Landing principal
+- Objetivo: Dar acceso rapido a las areas principales del sistema.
+- Pasos de uso:
+  1. Ingresar a la aplicacion.
+  2. Elegir entre inventario, inventario total o venta.
+  3. Entrar al modulo que corresponda a la tarea del momento.
+- Resultado esperado: El usuario entra al area correcta sin pasar directo al CRUD.
+
 ### 1. Consulta de productos
 - Objetivo:
 - Pasos de uso:
@@ -50,6 +58,27 @@ Explicar el uso de la aplicacion del almacen de forma simple y ordenada.
   3. Crear o editar el producto llenando el formulario correspondiente.
   4. Eliminar un producto solo si ya no debe existir en el registro.
 - Resultado esperado: El producto queda guardado y visible en la lista del tipo seleccionado.
+
+### 7. Inventario total
+- Objetivo: Ver el stock y precios cargados en todo el sistema.
+- Pasos de uso:
+  1. Ingresar a la landing principal.
+  2. Abrir la opcion inventario total.
+  3. Revisar cada bloque: con codigo de barra, sin codigo y granel.
+- Resultado esperado: El usuario puede consultar rapidamente lo disponible en cada categoria.
+
+### 8. Venta
+- Objetivo: Cargar productos por codigo y calcular el total de una venta.
+- Pasos de uso:
+  1. Ingresar a la landing principal.
+  2. Abrir la opcion venta.
+  3. Ingresar el codigo del producto.
+  4. Verificar el codigo para que el sistema identifique el tipo de producto.
+  5. Si es producto unitario, ingresar cantidad en unidades.
+  6. Si es producto a granel, ingresar el peso en gramos.
+  7. Agregar productos hasta completar la venta.
+  8. Finalizar la venta para descontar stock en productos con cantidad controlada.
+- Resultado esperado: El sistema muestra el detalle de la venta y el total calculado.
 
 ### 4. Actualizacion de precios
 - Objetivo:
@@ -86,3 +115,4 @@ Explicar el uso de la aplicacion del almacen de forma simple y ordenada.
 | 2026-05-12 | Se crea estructura inicial del manual de usuario | Base para documentar el uso real de la aplicacion |
 | 2026-05-12 | Se agrega base descriptiva del modulo de inventario | Incluye tipos de productos contemplados en la primera etapa |
 | 2026-05-12 | Se agrega descripcion inicial del CRUD de productos | Base para la operacion del backend web |
+| 2026-05-13 | Se agregan modulos de landing, inventario total y venta | Manual inicial de navegacion y uso operativo |

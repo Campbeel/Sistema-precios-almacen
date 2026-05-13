@@ -13,7 +13,10 @@
             <h1>Sistema de inventario</h1>
         </div>
         <nav class="nav">
-            <a href="{{ url_for('productos.listar_productos_view') }}">Productos</a>
+            <a href="{{ url_for('home.landing_view') }}">Inicio</a>
+            <a href="{{ url_for('productos.listar_productos_view') }}">Inventario</a>
+            <a href="{{ url_for('inventario.resumen_inventario_view') }}">Inventario total</a>
+            <a href="{{ url_for('ventas.venta_view') }}">Venta</a>
         </nav>
     </header>
 

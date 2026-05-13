@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <p class="section-label">Panel principal</p>
+        <h2>Accesos del sistema</h2>
+        <p class="hero-text">
+            Elige el area de trabajo segun la tarea que necesites hacer dentro del almacen.
+        </p>
+    </div>
+</section>
+
+<section class="landing-grid">
+    {% for opcion in opciones %}
+        <article class="panel landing-card">
+            <p class="section-label">{{ loop.index }} / 3</p>
+            <h3>{{ opcion.titulo }}</h3>
+            <p>{{ opcion.descripcion }}</p>
+            <a class="button primary" href="{{ opcion.url }}">{{ opcion.cta }}</a>
+        </article>
+    {% endfor %}
+</section>
+{% endblock %}
