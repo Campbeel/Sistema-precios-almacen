@@ -84,6 +84,15 @@ Explicar el uso de la aplicacion del almacen de forma simple y ordenada.
 Nota operativa:
 Las cantidades unitarias se ingresan como numeros enteros. Los productos a granel se ingresan en gramos enteros. Los montos se trabajan en CLP aproximados a decenas.
 
+### 9. Historial de ventas
+- Objetivo: Revisar ventas ya registradas en el sistema.
+- Pasos de uso:
+  1. Ingresar a la landing principal o barra superior.
+  2. Abrir la opcion historial.
+  3. Filtrar por fecha y/o tipo de pago si es necesario.
+  4. Revisar el total de cada venta y su detalle de productos.
+- Resultado esperado: El usuario puede consultar ventas pasadas por dia y revisar su contenido.
+
 ### 4. Actualizacion de precios
 - Objetivo:
 - Pasos de uso:
@@ -121,3 +130,4 @@ Las cantidades unitarias se ingresan como numeros enteros. Los productos a grane
 | 2026-05-12 | Se agrega descripcion inicial del CRUD de productos | Base para la operacion del backend web |
 | 2026-05-13 | Se agregan modulos de landing, inventario total y venta | Manual inicial de navegacion y uso operativo |
 | 2026-05-13 | Se agrega cierre de venta con tipo de pago e historial | La venta ya registra informacion persistente |
+| 2026-05-13 | Se agrega pagina de historial de ventas | Incluye filtros y detalle por venta |

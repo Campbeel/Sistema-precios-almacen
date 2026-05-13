@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <p class="section-label">Consulta de ventas</p>
+            <h2>Historial de ventas</h2>
+        </div>
+        <a class="button secondary" href="{{ url_for('home.landing_view') }}">Volver al inicio</a>
+    </div>
+
+    <div class="history-summary">
+        <span class="pill">Ventas: {{ cantidad_ventas }}</span>
+        <span class="pill">Total mostrado: ${{ total_mostrado }}</span>
+    </div>
+
+    <form class="filter-form" method="get">
+        <label>
+            Fecha
+            <input type="date" name="fecha" value="{{ filtros.fecha }}">
+        </label>
+
+        <label>
+            Tipo de pago
+            <select name="tipo_pago">
+                {% for tipo in tipos_pago %}
+                    <option value="{{ tipo.value }}" {% if filtros.tipo_pago == tipo.value %}selected{% endif %}>
+                        {{ tipo.label }}
+                    </option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <div class="filter-actions">
+            <button class="button primary" type="submit">Filtrar</button>
+            <a class="button secondary" href="{{ url_for('historial.historial_ventas_view') }}">Limpiar</a>
+        </div>
+    </form>
+
+    {% if error_carga %}
+        <div class="empty-state">
+            <p>{{ error_carga }}</p>
+        </div>
+    {% elif ventas %}
+        <div class="history-list">
+            {% for venta in ventas %}
+                <article class="subpanel history-sale">
+                    <div class="subpanel-header">
+                        <div>
+                            <p class="section-label">Venta #{{ venta.id }}</p>
+                            <h3>{{ venta.fecha_venta.strftime('%Y-%m-%d %H:%M:%S') }}</h3>
+                        </div>
+                        <div class="history-meta">
+                            <span class="pill">{{ venta.tipo_pago|capitalize }}</span>
+                            <span class="total-chip">${{ venta.total }}</span>
+                        </div>
+                    </div>
+
+                    {% if venta.detalles %}
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for detalle in venta.detalles %}
+                                        <tr>
+                                            <td>{{ detalle.codigo_producto }}</td>
+                                            <td>{{ detalle.nombre_producto }}</td>
+                                            <td>{{ detalle.cantidad }} {{ detalle.unidad_medida }}</td>
+                                            <td>${{ detalle.precio_referencia }}</td>
+                                            <td>${{ detalle.subtotal }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="empty-state compact">
+                            <p>Esta venta no tiene detalle visible.</p>
+                        </div>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>No hay ventas registradas con esos filtros.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

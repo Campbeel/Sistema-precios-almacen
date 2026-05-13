@@ -152,6 +152,13 @@ Registrar aqui decisiones importantes y el motivo.
 - Motivo: Los productos unitarios se venden en unidades enteras, granel se ingresa en gramos enteros y los precios operan en pesos chilenos sin monedas de 1 o 5
 - Impacto: El historial de ventas usa enteros para cantidad, precio y subtotal; granel solo usa calculo proporcional antes de aproximar
 
+### Decision 016
+- Fecha: 2026-05-13
+- Tema: Consulta de historial
+- Decision: Crear una pagina separada para consultar ventas historicas con filtros por fecha y tipo de pago
+- Motivo: Facilitar revision de ventas registradas y consultas por dia
+- Impacto: Se agrega un modulo de lectura del historial y acceso desde la navegacion principal
+
 ## Bitacora de cambios
 Registrar cada cambio tecnico con fecha y alcance.
 
@@ -169,13 +176,14 @@ Registrar cada cambio tecnico con fecha y alcance.
 | 2026-05-13 | Venta | Se ajusta captura de cantidad para pedir unidades o gramos segun el producto detectado | Python, Flask, HTML | Flujo de venta en dos pasos |
 | 2026-05-13 | Venta | Se agrega cierre persistente con historial, fecha de venta y tipo de pago | Python, Flask, MySQL | Requiere crear tablas `ventas_historial` y `ventas_historial_detalle` |
 | 2026-05-13 | Venta | Se ajustan cantidades y montos del historial a enteros y se aplica aproximacion CLP a decenas | Python, MySQL | Para bases existentes se agrega script de ajuste |
+| 2026-05-13 | Historial | Se agrega pagina de consulta del historial de ventas con filtros y detalle por venta | Python, Flask, HTML, CSS, MySQL | Accesible desde landing y barra principal |
 
 ## Pendientes tecnicos
 - Definir base de datos local o en servidor
 - Definir metodo de integracion del lector de codigos de barra
 - Definir estrategia de despliegue: local o AWS
 - Confirmar si productos a granel manejaran tambien stock en kilos
-- Definir vista de consulta del historial de ventas
+- Definir si el historial de ventas tendra exportacion o resumen diario
 
 ## Tecnologias posiblemente necesarias
 

@@ -276,6 +276,53 @@ body {
     margin-top: 1rem;
 }
 
+.filter-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0 1.25rem;
+}
+
+.filter-form label {
+    display: grid;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.filter-form input,
+.filter-form select {
+    border: 1px solid #d6c8b4;
+    border-radius: 0.85rem;
+    padding: 0.85rem 0.9rem;
+    font: inherit;
+    background: #fff;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: end;
+}
+
+.history-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.history-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.history-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+
 .sale-actions form {
     display: flex;
     gap: 0.75rem;
@@ -411,7 +458,9 @@ th {
     }
 
     .sale-actions,
-    .subpanel-header {
+    .subpanel-header,
+    .filter-actions,
+    .history-meta {
         flex-direction: column;
         align-items: stretch;
     }

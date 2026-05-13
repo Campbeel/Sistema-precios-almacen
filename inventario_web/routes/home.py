@@ -25,5 +25,11 @@ def landing_view():
             "url": url_for("ventas.venta_view"),
             "cta": "Abrir venta",
         },
+        {
+            "titulo": "Historial de ventas",
+            "descripcion": "Revisar ventas registradas, su total, fecha y detalle de productos.",
+            "url": url_for("historial.historial_ventas_view"),
+            "cta": "Ver historial",
+        },
     ]
     return render_template("landing.html", opciones=opciones)
