@@ -1,4 +1,4 @@
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 from mysql.connector import Error
 
@@ -8,7 +8,7 @@ from inventario_web.productos_config import PRODUCTOS_CONFIG
 
 PRODUCT_SEARCH_ORDER = ("codigo_barra", "sin_codigo", "granel")
 PAYMENT_TYPES = {"efectivo", "tarjeta"}
-ZERO = Decimal("0.00")
+ZERO = 0
 
 
 def buscar_producto_por_codigo(codigo):
@@ -63,7 +63,7 @@ def obtener_carrito_vacio():
 def obtener_total_carrito(carrito):
     total = ZERO
     for item in carrito:
-        total += Decimal(item["subtotal"])
+        total += int(item["subtotal"])
     return total
 
 
@@ -80,7 +80,7 @@ def agregar_producto_al_carrito(carrito, codigo, cantidad_raw):
         cantidad_en_carrito = _obtener_cantidad_en_carrito(
             carrito, producto["tipo_producto"], producto["id"]
         )
-        disponible = Decimal(producto["cantidad_disponible"])
+        disponible = int(producto["cantidad_disponible"])
         if cantidad_en_carrito + cantidad > disponible:
             return carrito, "No hay stock suficiente para agregar esa cantidad."
 
@@ -91,7 +91,7 @@ def agregar_producto_al_carrito(carrito, codigo, cantidad_raw):
 
     if indice_existente is not None:
         item = carrito_actualizado[indice_existente]
-        nueva_cantidad = Decimal(item["cantidad"]) + cantidad
+        nueva_cantidad = int(item["quantity"]) + cantidad
         carrito_actualizado[indice_existente] = _crear_item_carrito(producto, nueva_cantidad)
     else:
         carrito_actualizado.append(_crear_item_carrito(producto, cantidad))
@@ -140,13 +140,13 @@ def finalizar_venta(carrito, tipo_pago):
                 connection.rollback()
                 return f"El producto {item['name']} ya no esta disponible."
 
-            stock_actual = Decimal(str(producto["cantidad"]))
-            cantidad_vendida = Decimal(item["cantidad"])
+            stock_actual = int(producto["cantidad"])
+            cantidad_vendida = int(item["quantity"])
             if cantidad_vendida > stock_actual:
                 connection.rollback()
                 return f"No hay stock suficiente para {item['name']}."
 
-            nuevo_stock = int(stock_actual - cantidad_vendida)
+            nuevo_stock = stock_actual - cantidad_vendida
             update_query = f"UPDATE {config['table']} SET cantidad = %s WHERE id = %s"
             cursor.execute(update_query, (nuevo_stock, item["product_id"]))
 
@@ -183,10 +183,10 @@ def finalizar_venta(carrito, tipo_pago):
                     item["product_id"],
                     item["code"],
                     item["name"],
-                    Decimal(item["quantity"]),
+                    int(item["quantity"]),
                     item["quantity_label"],
-                    Decimal(item["unit_price"]),
-                    Decimal(item["subtotal"]),
+                    int(item["unit_price"]),
+                    int(item["subtotal"]),
                 ),
             )
 
@@ -211,6 +211,7 @@ def _normalizar_producto(tipo_producto, producto):
         "codigo": str(producto["codigo"]),
         "nombre": producto["nombre"],
         "precio": precio,
+        "precio_mostrable": _round_clp_to_10(precio),
         "price_label": config["price_label"],
         "has_stock_control": config["has_quantity"],
         "cantidad_disponible": cantidad_disponible,
@@ -239,13 +240,13 @@ def _parsear_cantidad(producto, cantidad_raw):
     if cantidad != cantidad.to_integral_value():
         return None
 
-    return cantidad
+    return int(cantidad)
 
 
 def _obtener_cantidad_en_carrito(carrito, tipo_producto, product_id):
     for item in carrito:
         if item["tipo_producto"] == tipo_producto and item["product_id"] == product_id:
-            return Decimal(item["cantidad"])
+            return int(item["quantity"])
     return ZERO
 
 
@@ -258,23 +259,30 @@ def _buscar_item_en_carrito(carrito, tipo_producto, product_id):
 
 def _crear_item_carrito(producto, cantidad):
     if producto["is_granel"]:
-        subtotal = producto["precio"] * (cantidad / Decimal("1000"))
+        subtotal_base = producto["precio"] * (Decimal(cantidad) / Decimal("1000"))
     else:
-        subtotal = producto["precio"] * cantidad
+        subtotal_base = producto["precio"] * Decimal(cantidad)
+
+    subtotal = _round_clp_to_10(subtotal_base)
+    unit_price = _round_clp_to_10(producto["precio"])
 
     return {
         "tipo_producto": producto["tipo_producto"],
         "product_id": producto["id"],
         "code": producto["codigo"],
         "name": producto["nombre"],
-        "quantity": _decimal_to_string(cantidad),
+        "quantity": str(int(cantidad)),
         "quantity_label": producto["quantity_label"],
-        "unit_price": _decimal_to_string(producto["precio"]),
+        "unit_price": str(unit_price),
         "unit_price_label": producto["price_label"],
-        "subtotal": _decimal_to_string(subtotal),
+        "subtotal": str(subtotal),
         "has_stock_control": producto["has_stock_control"],
     }
 
 
-def _decimal_to_string(value):
-    return format(Decimal(value), "f")
+def _round_clp_to_10(value):
+    rounded_to_peso = int(Decimal(value).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+    residue = rounded_to_peso % 10
+    if residue <= 4:
+        return rounded_to_peso - residue
+    return rounded_to_peso + (10 - residue)

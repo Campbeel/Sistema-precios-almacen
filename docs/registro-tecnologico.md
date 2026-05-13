@@ -145,6 +145,13 @@ Registrar aqui decisiones importantes y el motivo.
 - Motivo: Necesidad de trazabilidad operativa y control aproximado de ingresos
 - Impacto: La base de datos incorpora tablas de historial y la venta requiere seleccionar `efectivo` o `tarjeta`
 
+### Decision 015
+- Fecha: 2026-05-13
+- Tema: Cantidades y montos en venta
+- Decision: Guardar cantidades de venta como enteros y manejar montos en CLP como enteros aproximados a decenas
+- Motivo: Los productos unitarios se venden en unidades enteras, granel se ingresa en gramos enteros y los precios operan en pesos chilenos sin monedas de 1 o 5
+- Impacto: El historial de ventas usa enteros para cantidad, precio y subtotal; granel solo usa calculo proporcional antes de aproximar
+
 ## Bitacora de cambios
 Registrar cada cambio tecnico con fecha y alcance.
 
@@ -161,6 +168,7 @@ Registrar cada cambio tecnico con fecha y alcance.
 | 2026-05-13 | Navegacion y venta | Se agregan landing, resumen de inventario y venta interna con carrito por sesion | Python, Flask, HTML, CSS, MySQL | Venta descuenta stock solo en productos con cantidad |
 | 2026-05-13 | Venta | Se ajusta captura de cantidad para pedir unidades o gramos segun el producto detectado | Python, Flask, HTML | Flujo de venta en dos pasos |
 | 2026-05-13 | Venta | Se agrega cierre persistente con historial, fecha de venta y tipo de pago | Python, Flask, MySQL | Requiere crear tablas `ventas_historial` y `ventas_historial_detalle` |
+| 2026-05-13 | Venta | Se ajustan cantidades y montos del historial a enteros y se aplica aproximacion CLP a decenas | Python, MySQL | Para bases existentes se agrega script de ajuste |
 
 ## Pendientes tecnicos
 - Definir base de datos local o en servidor

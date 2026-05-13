@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 from mysql.connector import Error
 
@@ -121,4 +119,4 @@ def _obtener_carrito():
 
 
 def _formatear_total(total):
-    return format(Decimal(total), ".2f")
+    return str(int(total))

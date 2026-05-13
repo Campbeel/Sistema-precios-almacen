@@ -28,7 +28,7 @@
                     <p class="section-label">Producto detectado</p>
                     <h3>{{ producto_preparado.nombre }}</h3>
                     <p>Codigo: {{ producto_preparado.codigo }}</p>
-                    <p>{{ producto_preparado.price_label }}: ${{ producto_preparado.precio }}</p>
+                    <p>{{ producto_preparado.price_label }}: ${{ producto_preparado.precio_mostrable }}</p>
                     {% if producto_preparado.has_stock_control %}
                         <p>Stock disponible: {{ producto_preparado.cantidad_disponible }} unidades</p>
                     {% else %}
@@ -72,7 +72,7 @@
                 <p class="section-label">Detalle actual</p>
                 <h2>Venta en curso</h2>
             </div>
-            <span class="total-chip">Total: ${{ "%.2f"|format(total) }}</span>
+            <span class="total-chip">Total: ${{ total }}</span>
         </div>
 
         {% if carrito %}

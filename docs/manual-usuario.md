@@ -81,6 +81,9 @@ Explicar el uso de la aplicacion del almacen de forma simple y ordenada.
   9. Finalizar la venta para descontar stock en productos con cantidad controlada.
 - Resultado esperado: El sistema muestra el detalle de la venta, el total calculado y guarda la venta en el historial.
 
+Nota operativa:
+Las cantidades unitarias se ingresan como numeros enteros. Los productos a granel se ingresan en gramos enteros. Los montos se trabajan en CLP aproximados a decenas.
+
 ### 4. Actualizacion de precios
 - Objetivo:
 - Pasos de uso:
