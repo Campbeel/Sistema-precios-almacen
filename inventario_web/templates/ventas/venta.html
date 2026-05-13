@@ -112,6 +112,15 @@
                     <button class="button secondary" type="submit">Vaciar venta</button>
                 </form>
                 <form method="post" action="{{ url_for('ventas.finalizar_venta_view') }}">
+                    <label class="payment-field">
+                        Tipo de pago
+                        <select name="tipo_pago" required>
+                            <option value="">Seleccionar</option>
+                            {% for tipo in tipos_pago %}
+                                <option value="{{ tipo.value }}">{{ tipo.label }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
                     <button class="button primary" type="submit">Finalizar venta</button>
                 </form>
             </div>

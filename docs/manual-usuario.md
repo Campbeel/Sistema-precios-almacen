@@ -77,8 +77,9 @@ Explicar el uso de la aplicacion del almacen de forma simple y ordenada.
   5. Si es producto unitario, ingresar cantidad en unidades.
   6. Si es producto a granel, ingresar el peso en gramos.
   7. Agregar productos hasta completar la venta.
-  8. Finalizar la venta para descontar stock en productos con cantidad controlada.
-- Resultado esperado: El sistema muestra el detalle de la venta y el total calculado.
+  8. Seleccionar tipo de pago: efectivo o tarjeta.
+  9. Finalizar la venta para descontar stock en productos con cantidad controlada.
+- Resultado esperado: El sistema muestra el detalle de la venta, el total calculado y guarda la venta en el historial.
 
 ### 4. Actualizacion de precios
 - Objetivo:
@@ -116,3 +117,4 @@ Explicar el uso de la aplicacion del almacen de forma simple y ordenada.
 | 2026-05-12 | Se agrega base descriptiva del modulo de inventario | Incluye tipos de productos contemplados en la primera etapa |
 | 2026-05-12 | Se agrega descripcion inicial del CRUD de productos | Base para la operacion del backend web |
 | 2026-05-13 | Se agregan modulos de landing, inventario total y venta | Manual inicial de navegacion y uso operativo |
+| 2026-05-13 | Se agrega cierre de venta con tipo de pago e historial | La venta ya registra informacion persistente |

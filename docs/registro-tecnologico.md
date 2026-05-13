@@ -138,6 +138,13 @@ Registrar aqui decisiones importantes y el motivo.
 - Motivo: Evitar errores de ingreso y adaptar la captura a productos unitarios y granel
 - Impacto: La interfaz de venta detecta el producto antes de pedir la cantidad
 
+### Decision 014
+- Fecha: 2026-05-13
+- Tema: Cierre de venta
+- Decision: Al finalizar una venta se descuenta stock controlado, se guarda cabecera y detalle en historial, y se registra tipo de pago
+- Motivo: Necesidad de trazabilidad operativa y control aproximado de ingresos
+- Impacto: La base de datos incorpora tablas de historial y la venta requiere seleccionar `efectivo` o `tarjeta`
+
 ## Bitacora de cambios
 Registrar cada cambio tecnico con fecha y alcance.
 
@@ -153,13 +160,14 @@ Registrar cada cambio tecnico con fecha y alcance.
 | 2026-05-12 | Configuracion local | Se agrega carga de `.env` y archivo local base para conexion del backend | Python, configuracion | La clave real debe reemplazarse manualmente |
 | 2026-05-13 | Navegacion y venta | Se agregan landing, resumen de inventario y venta interna con carrito por sesion | Python, Flask, HTML, CSS, MySQL | Venta descuenta stock solo en productos con cantidad |
 | 2026-05-13 | Venta | Se ajusta captura de cantidad para pedir unidades o gramos segun el producto detectado | Python, Flask, HTML | Flujo de venta en dos pasos |
+| 2026-05-13 | Venta | Se agrega cierre persistente con historial, fecha de venta y tipo de pago | Python, Flask, MySQL | Requiere crear tablas `ventas_historial` y `ventas_historial_detalle` |
 
 ## Pendientes tecnicos
 - Definir base de datos local o en servidor
 - Definir metodo de integracion del lector de codigos de barra
 - Definir estrategia de despliegue: local o AWS
 - Confirmar si productos a granel manejaran tambien stock en kilos
-- Definir si se guardara historial de ventas en base de datos
+- Definir vista de consulta del historial de ventas
 
 ## Tecnologias posiblemente necesarias
 

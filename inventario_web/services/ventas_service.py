@@ -7,6 +7,7 @@ from inventario_web.productos_config import PRODUCTOS_CONFIG
 
 
 PRODUCT_SEARCH_ORDER = ("codigo_barra", "sin_codigo", "granel")
+PAYMENT_TYPES = {"efectivo", "tarjeta"}
 ZERO = Decimal("0.00")
 
 
@@ -105,13 +106,24 @@ def eliminar_item_del_carrito(carrito, index):
     return carrito_actualizado
 
 
-def finalizar_venta(carrito):
+def obtener_tipos_pago():
+    return (
+        {"value": "efectivo", "label": "Efectivo"},
+        {"value": "tarjeta", "label": "Tarjeta"},
+    )
+
+
+def finalizar_venta(carrito, tipo_pago):
     if not carrito:
         return "No hay productos cargados en la venta."
+    if tipo_pago not in PAYMENT_TYPES:
+        return "Debes seleccionar un tipo de pago valido."
 
     connection = get_connection()
     cursor = connection.cursor(dictionary=True)
     try:
+        total_venta = obtener_total_carrito(carrito)
+
         for item in carrito:
             if not item["has_stock_control"]:
                 continue
@@ -137,6 +149,46 @@ def finalizar_venta(carrito):
             nuevo_stock = int(stock_actual - cantidad_vendida)
             update_query = f"UPDATE {config['table']} SET cantidad = %s WHERE id = %s"
             cursor.execute(update_query, (nuevo_stock, item["product_id"]))
+
+        cursor.execute(
+            """
+            INSERT INTO ventas_historial (tipo_pago, total)
+            VALUES (%s, %s)
+            """,
+            (tipo_pago, total_venta),
+        )
+        venta_id = cursor.lastrowid
+
+        detalle_query = """
+            INSERT INTO ventas_historial_detalle (
+                venta_id,
+                tipo_producto,
+                producto_id,
+                codigo_producto,
+                nombre_producto,
+                cantidad,
+                unidad_medida,
+                precio_referencia,
+                subtotal
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+
+        for item in carrito:
+            cursor.execute(
+                detalle_query,
+                (
+                    venta_id,
+                    item["tipo_producto"],
+                    item["product_id"],
+                    item["code"],
+                    item["name"],
+                    Decimal(item["quantity"]),
+                    item["quantity_label"],
+                    Decimal(item["unit_price"]),
+                    Decimal(item["subtotal"]),
+                ),
+            )
 
         connection.commit()
         return None

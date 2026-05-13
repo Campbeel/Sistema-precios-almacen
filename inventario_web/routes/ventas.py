@@ -9,6 +9,7 @@ from inventario_web.services.ventas_service import (
     finalizar_venta,
     obtener_carrito_vacio,
     obtener_total_carrito,
+    obtener_tipos_pago,
     preparar_producto_para_venta,
 )
 
@@ -25,6 +26,7 @@ def venta_view():
         carrito=carrito,
         producto_preparado=None,
         total=total,
+        tipos_pago=obtener_tipos_pago(),
     )
 
 
@@ -49,6 +51,7 @@ def preparar_producto_venta_view():
         carrito=carrito,
         producto_preparado=producto_preparado,
         total=total,
+        tipos_pago=obtener_tipos_pago(),
     )
 
 
@@ -92,9 +95,10 @@ def vaciar_venta_view():
 def finalizar_venta_view():
     carrito = _obtener_carrito()
     total = obtener_total_carrito(carrito)
+    tipo_pago = request.form.get("tipo_pago", "")
 
     try:
-        error = finalizar_venta(carrito)
+        error = finalizar_venta(carrito, tipo_pago)
     except Error:
         flash("No fue posible finalizar la venta.", "error")
         return redirect(url_for("ventas.venta_view"))
@@ -104,7 +108,11 @@ def finalizar_venta_view():
         return redirect(url_for("ventas.venta_view"))
 
     session["venta_carrito"] = obtener_carrito_vacio()
-    flash(f"Venta finalizada. Total calculado: ${_formatear_total(total)}.", "success")
+    flash(
+        f"Venta finalizada. Total calculado: ${_formatear_total(total)}. "
+        f"Pago registrado: {tipo_pago}.",
+        "success",
+    )
     return redirect(url_for("ventas.venta_view"))
 
 

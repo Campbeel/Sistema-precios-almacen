@@ -276,6 +276,27 @@ body {
     margin-top: 1rem;
 }
 
+.sale-actions form {
+    display: flex;
+    gap: 0.75rem;
+    align-items: end;
+}
+
+.payment-field {
+    display: grid;
+    gap: 0.45rem;
+    font-weight: 600;
+}
+
+.payment-field select {
+    border: 1px solid #d6c8b4;
+    border-radius: 0.85rem;
+    padding: 0.85rem 0.9rem;
+    font: inherit;
+    background: #fff;
+    min-width: 180px;
+}
+
 .table-wrap {
     overflow-x: auto;
 }
@@ -391,6 +412,11 @@ th {
 
     .sale-actions,
     .subpanel-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sale-actions form {
         flex-direction: column;
         align-items: stretch;
     }
